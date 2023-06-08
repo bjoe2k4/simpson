@@ -35,7 +35,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <tcl.h>
+#include <tcl/tcl.h>
 #include "iodata.h"
 #include "tclutil.h"
 #include <unistd.h>

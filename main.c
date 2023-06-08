@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <tcl.h>
+#include <tcl/tcl.h>
 #include <pthread.h>
 
 #ifdef WIN32

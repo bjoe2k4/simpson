@@ -24,7 +24,7 @@
 #ifndef __TCLUTIL_H
 #define __TCLUTIL_H
   
-#include <tcl.h>
+#include <tcl/tcl.h>
 #include "complx.h"
 #include "matrix.h"
 

@@ -8,7 +8,7 @@
 #ifndef FIDCALC_H_
 #define FIDCALC_H_
 
-#include "tcl.h"
+#include <tcl/tcl.h>
 #include "sim.h"
 
 typedef struct _acq_data {

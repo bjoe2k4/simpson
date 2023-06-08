@@ -16,7 +16,7 @@ find_package (LAPACK REQUIRED)
 find_package (TCL REQUIRED)
 find_package (Threads REQUIRED)
 find_package (GSL)
-#find_package (MPI)
+find_package (MPI)
 
 #set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
 
@@ -32,7 +32,7 @@ ExternalProject_Add (nfft3
   PREFIX nfft3
   URL https://www-user.tu-chemnitz.de/~potts/nfft/download/nfft-3.3.2.tar.gz
   URL_HASH MD5=550737c06f4d6ea6c156800169d8f0d9
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-fftw3-libdir=${FFTW3_LIB_DIR} --enable-all
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-fftw3-libdir=${FFTW3_LIB_DIR} --enable-all --with-gcc-arch=haswell
   BUILD_COMMAND make
   INSTALL_COMMAND make install
   )

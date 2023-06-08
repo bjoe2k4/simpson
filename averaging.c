@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include <tcl.h>
+#include <tcl/tcl.h>
 #include "averaging.h"
 #include "defs.h"
 #include "sim.h"

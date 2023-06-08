@@ -26,7 +26,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
-#include <tcl.h>
+#include <tcl/tcl.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include "iodata.h"

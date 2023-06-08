@@ -24,7 +24,7 @@
 #ifndef __SIM_H
 #define __SIM_H
 
-#include <tcl.h>
+#include <tcl/tcl.h>
 #include <stdio.h>
 #include "cryst.h"
 #include "spinsys_struct.h"

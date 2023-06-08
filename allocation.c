@@ -8,7 +8,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <tcl.h>
+#include <tcl/tcl.h>
 
 #define MEMALLOCATOR(VAR,TYPE,SIZE,ERRORMESSAGE) \
   TYPE *VAR = ( TYPE *)Tcl_Alloc( (SIZE) * sizeof(TYPE) ); \

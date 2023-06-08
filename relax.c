@@ -28,7 +28,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-#include <tcl.h>
+#include <tcl/tcl.h>
 #include "cm.h"
 #include "spinsys.h"
 #include "ham.h"

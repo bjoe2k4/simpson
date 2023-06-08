@@ -28,7 +28,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#include <tcl.h>
+#include <tcl/tcl.h>
 #include <math.h>
 #include <assert.h>
 #include "matrix.h"

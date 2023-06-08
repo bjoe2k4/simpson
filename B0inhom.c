@@ -35,7 +35,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <tcl.h>
+#include <tcl/tcl.h>
 #include "matrix.h"
 #include "defs.h"
 #include "cryst.h"

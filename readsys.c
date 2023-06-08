@@ -29,7 +29,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-#include <tcl.h>
+#include <tcl/tcl.h>
 #include <assert.h>
 #include "matrix.h"
 #include "spinsys.h"

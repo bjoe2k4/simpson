@@ -8,7 +8,7 @@
 #ifndef SPINACH_H_
 #define SPINACH_H_
 
-#include "tcl.h"
+#include <tcl/tcl.h>
 #include "sim.h"
 
 void spinach_disable_command(Sim_info *sim, char *cmd);

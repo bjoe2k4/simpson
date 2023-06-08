@@ -8,7 +8,7 @@
 
  #include <stdlib.h>
  #include <stdio.h>
- #include <tcl.h>
+ #include <tcl/tcl.h>
  #include <math.h>
  #include <ctype.h>
  #include <unistd.h>

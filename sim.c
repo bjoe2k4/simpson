@@ -31,7 +31,7 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include <tcl.h>
+#include <tcl/tcl.h>
 #include <string.h>
 #include "matrix.h"
 #include "tclutil.h"

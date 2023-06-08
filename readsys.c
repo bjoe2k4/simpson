@@ -40,6 +40,7 @@
 #include "blockdiag.h"
 #include "ham.h"
 
+extern glob_info_type glob_info;
 
 /* based on NRC QuickSort algorithm */
 void sort_mzmap(int Nmz, int row, int c_ini, int n_c, int *mzmap, int *permvec)
@@ -146,7 +147,7 @@ void readsys(Tcl_Interp* interp,Sim_info* s)
   ss=s->ss;
   ss_initialize(ss);
 
-  ver = (verbose & VERBOSE_SPINSYS);
+  ver = ((verbose & VERBOSE_SPINSYS) && glob_info.mpi_rank == 0);
   
   if (ver) printf("Reading spinsystem:\n");
 

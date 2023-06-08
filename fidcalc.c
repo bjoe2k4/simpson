@@ -23,6 +23,8 @@
 //#define TIMING
 #include "timing.h"
 
+extern glob_info_type glob_info;
+
 // Result = +1 if there is symmetry, -1 otherwise
 int is_rhosymmetry(mat_complx *fstart, mat_complx *fdetect)
 {
@@ -224,7 +226,7 @@ void direct_acqblock(Tcl_Interp *interp,Tcl_Obj *obj,Sim_info *sim,Sim_wsp *wsp)
 	}
 	t0 = wsp->t - t0;
 	if (t0 > wsp->dw*(wsp->Nacq-1)) {
-		if (verbose & VERBOSE_ACQBLOCK) printf("WARNING: acq_block is too long: duration %g > acquisition time %g\n",t0,wsp->dw*(wsp->Nacq-1));
+		if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) printf("WARNING: acq_block is too long: duration %g > acquisition time %g\n",t0,wsp->dw*(wsp->Nacq-1));
 		//exit(1);
 	}
 	l = wsp->acqblock_sto - ACQBLOCK_STO_INI;
@@ -234,24 +236,24 @@ void direct_acqblock(Tcl_Interp *interp,Tcl_Obj *obj,Sim_info *sim,Sim_wsp *wsp)
 	if (sim->taur < 0) {
 		/* static case */
 		modnumbers(t0,wsp->dw,&k,&l);
-		if (verbose & VERBOSE_ACQBLOCK) {
+		if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) {
 			printf("acq_block synchronization info: %d * acq_block(%g us) = %d * dwelltime(%g us)\n",k,t0,l,wsp->dw);
 		}
 	} else {
 		/* we have MAS */
 		modnumbers_mas(t0,wsp->dw,sim->taur,&k,&l,&m);
-		if (verbose & VERBOSE_ACQBLOCK) {
+		if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) {
 			printf("acq_block synchronization info: %d * acq_block(%g us) = %d * dwelltime(%g us) = %d * tauR(%g us)\n",k,t0,l,wsp->dw,m,sim->taur);
 		}
 	}
 	if (k*t0 > wsp->dw*(wsp->Nacq-1)) {
-		if (verbose & VERBOSE_ACQBLOCK) printf("\nWARNING: acq_block is NOT properly synchronized: Hamiltonian period %g > acquisition time %g\n\n",k*t0,wsp->dw*(wsp->Nacq-1));
+		if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) printf("\nWARNING: acq_block is NOT properly synchronized: Hamiltonian period %g > acquisition time %g\n\n",k*t0,wsp->dw*(wsp->Nacq-1));
 		while (k*t0 > wsp->dw*(wsp->Nacq-1)) k--;
-		//if (verbose & VERBOSE_ACQBLOCK) printf("1. Reducing k to %d \n",k);
+		//if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) printf("1. Reducing k to %d \n",k);
 		if (k*t0 < wsp->dw*(wsp->Nacq-1) && fabs(k*t0-wsp->dw*(wsp->Nacq-1))>1e-6) k++;
-		//if (verbose & VERBOSE_ACQBLOCK) printf("adjusting k to %d \n",k);
+		//if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) printf("adjusting k to %d \n",k);
 		l = (int)floor(k*t0/wsp->dw+1e-6);
-		if (verbose & VERBOSE_ACQBLOCK) printf("Reducing acq_block repetitions to %d (total period %g, total acquisition %g)\n",k,k*t0,wsp->dw*(wsp->Nacq-1));
+		if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) printf("Reducing acq_block repetitions to %d (total period %g, total acquisition %g)\n",k,k*t0,wsp->dw*(wsp->Nacq-1));
 		//exit(1);
 	}
 	for (i=1; i<k; i++) {
@@ -465,13 +467,13 @@ void direct_acqblock_time_FWT(Tcl_Interp *interp,Tcl_Obj *obj,Sim_info *sim,Sim_
 	if (sim->taur < 0) {
 		// static case
 		modnumbers(t0,wsp->dw,&k,&l);
-		if (verbose & VERBOSE_ACQBLOCK) {
+		if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) {
 			printf("acq_block synchronization info: %d * acq_block(%g us) = %d * dwelltime(%g us)\n",k,t0,l,wsp->dw);
 		}
 	} else {
 		// we have MAS
 		modnumbers_mas(t0,wsp->dw,sim->taur,&k,&l,&m);
-		if (verbose & VERBOSE_ACQBLOCK) {
+		if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) {
 			printf("acq_block synchronization info: %d * acq_block(%g us) = %d * dwelltime(%g us) = %d * tauR(%g us)\n",k,t0,l,wsp->dw,m,sim->taur);
 		}
 	}
@@ -642,7 +644,7 @@ void direct_acqblock_freq(Tcl_Interp *interp,Tcl_Obj *obj,Sim_info *sim,Sim_wsp 
 	k = m = 1;
 	if (sim->taur > 0) {
 		modnumbers(period,sim->taur,&k,&m);
-		if (verbose & VERBOSE_ACQBLOCK) {
+		if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) {
 			printf("acq_block synchronization info: %d * acq_block(%g us) = %d * rotor period(%g us)\n",k,period,m,sim->taur);
 		}
 		period *= k;
@@ -899,7 +901,7 @@ void direct_acqblock_freq(Tcl_Interp *interp,Tcl_Obj *obj,Sim_info *sim,Sim_wsp 
 	k = m = 1;
 	if (sim->taur > 0) {
 		modnumbers(period,sim->taur,&k,&m);
-		if (verbose & VERBOSE_ACQBLOCK) {
+		if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) {
 			printf("acq_block synchronization info: %d * acq_block(%g us) = %d * rotor period(%g us)\n",k,period,m,sim->taur);
 		}
 		period *= k;
@@ -5079,7 +5081,7 @@ double direct_props(Tcl_Interp *interp,Tcl_Obj *obj,Sim_info *sim,Sim_wsp *wsp)
 	k = m = 1;
 	if (sim->taur > 0) {
 		modnumbers(period,sim->taur,&k,&m);
-		if (verbose & VERBOSE_ACQBLOCK) {
+		if ((verbose & VERBOSE_ACQBLOCK) && (glob_info.mpi_rank == 0)) {
 			printf("acq_block synchronization info: %d * acq_block(%g us) = %d * rotor period(%g us)\n",k,period,m,sim->taur);
 		}
 		period *= k;

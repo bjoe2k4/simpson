@@ -42,6 +42,8 @@
 #include "defs.h"
 #include "rfprof.h"
 
+extern glob_info_type glob_info;
+
 /****
  * alocate rfprof structure
  ****/
@@ -95,7 +97,7 @@ double ** read_rfproffile(const char* name,int nchan)
   int ver;
   double dum, **data;
   
-  ver= verbose & VERBOSE_RFPROF;
+  ver= verbose & VERBOSE_RFPROF && glob_info.mpi_rank == 0;
   strcpy(fname,name);
   if (!strcmp(fname,"none")) {
 	  data = rfprof_alloc(1, nchan);

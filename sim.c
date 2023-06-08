@@ -249,7 +249,7 @@ Sim_info * sim_initialize(Tcl_Interp* interp)
     s->brl=TclGetDouble(interp,"par","rotor_angle",0,NOTSET);
     if (s->brl == NOTSET) {    
       s->brl=(s->wr == 0.0 ? 0.0 : MAGIC_ANGLE);
-      if (verbose & VERBOSE_SIMINFO) {
+      if ((verbose & VERBOSE_SIMINFO) && (glob_info.mpi_rank == 0)) {
         printf("The rotor_angle is set to %g\n",s->brl);      
       }
     } 
@@ -395,7 +395,7 @@ Sim_info * sim_initialize(Tcl_Interp* interp)
 		  fprintf(stderr,"error: unable to interpret start operator '%s' (element %d)\n",startop,i+1);
 		  exit(1);
 	  }
-	  if (verbose & VERBOSE_OPER) {
+	  if ((verbose & VERBOSE_OPER) && (glob_info.mpi_rank == 0)) {
 		  if (objc == 1) {
 			  sprintf(buf,"Start operator '%s'",startop);
 		  } else {
@@ -484,7 +484,7 @@ Sim_info * sim_initialize(Tcl_Interp* interp)
     	//}
     	//if (s->conjugate_fid[i] == -1) s->conjugate_fid[i]=(ss_gamma(s->ss,s->obs_nuc[i]) > 0 ? 1 : 0);
 
-    	if (verbose & VERBOSE_OPER) {
+    	if ((verbose & VERBOSE_OPER) && (glob_info.mpi_rank == 0)) {
     		if (objc == 1) {
     			sprintf(buf,"Detect operator '%s'",detectop);
     		} else {
@@ -536,7 +536,7 @@ Sim_info * sim_initialize(Tcl_Interp* interp)
 	  s->EDsymmetry = is_rhosymmetry(s->fstart[0],s->fdetect[0]);
   }
   //printf("ED symmetry is %d\n",s->EDsymmetry);
-  if (verbose & VERBOSE_OPER) {
+  if ((verbose & VERBOSE_OPER) && (glob_info.mpi_rank == 0)) {
      printf("Excitation-Detection symmetry: ");
      if (s->EDsymmetry < 0)
     	 printf("not assumed\n");

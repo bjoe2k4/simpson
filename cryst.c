@@ -45,6 +45,8 @@
 #include "defs.h"
 #include "matrix.h"
 
+extern glob_info_type glob_info;
+
 Cryst * cryst_alloc(int N)
 {
 	Cryst * crdata;
@@ -72,7 +74,7 @@ Cryst * read_crystfile(char* crystname, int from, int to)
   int isbin = 0;
   int a = 2;
   
-  ver= verbose & VERBOSE_POWDER;
+  ver= verbose & VERBOSE_POWDER && glob_info.mpi_rank == 0;
   strcpy(fname,crystname);
   strcat(fname,"_cryst");
   while (strlen(cryst_names[n])) {

@@ -160,12 +160,14 @@ void thread_work(int thread_id, Tcl_Interp *interp){
 	  //printf("worker (%i/%i): fidsum[1].re = %f\n", thread_id+1,glob_info.mpi_rank+1, fidsum[1].re);
 	  //if (collect_phivals) printf("worker (%i/%i): phivals[1].re = %f\n", thread_id+1,glob_info.mpi_rank+1, phivals[1].re);
 	  if (verbose & VERBOSE_PROGRESS) {
-		  printf("Worker %i/%i: [cryst %d/%d]",thread_id+1,glob_info.mpi_rank+1,icr,thrd.ncr);
-		  if (thrd.nrf > 1) printf(" [rfsc %d/%d]",irf,thrd.nrf);
-		  if (thrd.nz > 1) printf(" [z-coor %d/%d]",iz,thrd.nz);
-		  if (thrd.Navepar > 0) printf(" [ave %d/%d]",ave_start+1,Naveval);
-		  printf("\n");
-		  //printf("Worker %i/%i: [cryst %d/%d] [rfsc %d/%d] [z-coor %d/%d]\n", thread_id+1,process_id+1,icr,ncr,irf,nrf,iz,nz);
+		  if (icr % 1000 == 0) {
+			printf("Worker %i/%i: [cryst %d/%d]",thread_id+1,glob_info.mpi_rank+1,icr,thrd.ncr);
+			if (thrd.nrf > 1) printf(" [rfsc %d/%d]",irf,thrd.nrf);
+			if (thrd.nz > 1) printf(" [z-coor %d/%d]",iz,thrd.nz);
+			if (thrd.Navepar > 0) printf(" [ave %d/%d]",ave_start+1,Naveval);
+			printf("\n");
+			//printf("Worker %i/%i: [cryst %d/%d] [rfsc %d/%d] [z-coor %d/%d]\n", thread_id+1,process_id+1,icr,ncr,irf,nrf,iz,nz);
+		  }
 		  fflush(stdout);
 	  }
 	  i++;
@@ -203,7 +205,9 @@ void thread_work_interpol_source(int thread_id, Tcl_Interp *interp) {
 		wsp->cryst_idx = icr;
 		sim_calcfid_interpol(sim, wsp);
 		if (verbose & VERBOSE_PROGRESS) {
-			printf("Worker %i/%i: [cryst %d/%d] for interpolation\n",thread_id+1,glob_info.mpi_rank+1,icr,thrd.ncr);
+			if (icr % 1000 == 0) {
+				printf("Worker %i/%i: [cryst %d/%d] for interpolation\n",thread_id+1,glob_info.mpi_rank+1,icr,thrd.ncr);
+			}
 			fflush(stdout);
 		}
 	}
@@ -709,7 +713,9 @@ void thread_work_interpol_calcfid(int thread_id)
 		}
 		i++;
 		if (verbose & VERBOSE_PROGRESS) {
-			printf("Worker %i/%i: [cryst %d/%d] \n",thread_id+1,glob_info.mpi_rank+1,icr,ncr);
+			if (icr % 1000 == 0) {
+				printf("Worker %i/%i: [cryst %d/%d] \n",thread_id+1,glob_info.mpi_rank+1,icr,ncr);
+			}
 			fflush(stdout);
 		}
 	}
@@ -928,7 +934,9 @@ void thread_work_ASG_interpol(int thread_id)
 		}
 		i++;
 		if (verbose & VERBOSE_PROGRESS) {
-			printf("Worker %i/%i: [triangle %d/%d] \n",thread_id+1,glob_info.mpi_rank+1,i,Ntri);
+			if (i % 1000 == 0) {
+				printf("Worker %i/%i: [triangle %d/%d] \n",thread_id+1,glob_info.mpi_rank+1,i,Ntri);
+			}
 			fflush(stdout);
 		}
 	}

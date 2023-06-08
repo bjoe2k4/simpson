@@ -35,6 +35,8 @@
 #include "cm.h"
 #include "tclutil.h"
 
+extern glob_info_type glob_info;
+
 	/* functions that define new Tcl commands from C level */
 	void tclcmd_rfshape(Tcl_Interp* interp);
 	void tclcmd_simpson(Tcl_Interp* interp);
@@ -153,7 +155,7 @@ int TclGetInt(Tcl_Interp* interp,char *aryname,char* varname,
        fprintf(stderr,"error: could not read integer variable %s(%s)\n",aryname,varname);
        exit(1);
      }
-     if (verbose & VERBOSE_PAR)
+     if ((verbose & VERBOSE_PAR) && (glob_info.mpi_rank == 0))
        printf("integer variable %s in array %s is set to default value %d\n",varname,aryname,defval);
 
      return defval;
@@ -161,7 +163,7 @@ int TclGetInt(Tcl_Interp* interp,char *aryname,char* varname,
 
   if (Tcl_GetIntFromObj(interp,src,&val) != TCL_OK) return TclError(interp,"GetInt(2)");
  
-  if (verbose & VERBOSE_PAR)
+  if ((verbose & VERBOSE_PAR) && (glob_info.mpi_rank == 0))
     printf("integer variable %s in array %s is set to %d\n",varname,aryname,val);
   return val;
 }
@@ -178,13 +180,13 @@ double TclGetDouble(Tcl_Interp* interp,char *aryname,char* varname,
        fprintf(stderr,"error: could not read double variable %s(%s)\n",aryname,varname);
        exit(-1);
      }
-     if (verbose & VERBOSE_PAR)
+     if ((verbose & VERBOSE_PAR) && (glob_info.mpi_rank == 0))
        printf("double variable %s in array %s is set to default value %g\n",varname,aryname,defval);
      return defval;
   }
   if (Tcl_GetDoubleFromObj(interp,src,&val) != TCL_OK) return TclError(interp,"GetDouble(2)");
  
-  if (verbose & VERBOSE_PAR)
+  if ((verbose & VERBOSE_PAR) && (glob_info.mpi_rank == 0))
     printf("double variable %s in array %s is set to %g\n",varname,aryname,val);
   return val;
 }
@@ -200,14 +202,14 @@ char* TclGetString(Tcl_Interp* interp,char *dst,char* aryname,char* varname,
        fprintf(stderr,"error: could not read string variable %s(%s)\n",aryname,varname);
        exit(-1);
      }
-     if (verbose & VERBOSE_PAR)
+     if ((verbose & VERBOSE_PAR) && (glob_info.mpi_rank == 0))
        printf("string variable %s in array %s is set to default value %s\n",varname,aryname,defval);
      strcpy(dst,defval);
      return dst;
   }
   strcpy(dst,Tcl_GetString(src));
 
-  if (verbose & VERBOSE_PAR) {
+  if ((verbose & VERBOSE_PAR) && (glob_info.mpi_rank == 0)) {
     printf("string variable %s in array %s is set to %s\n",varname,aryname,dst);
   }
   return dst;

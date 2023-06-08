@@ -99,8 +99,10 @@ int main (int argc,char *argv[])
    char processor_name[MPI_MAX_PROCESSOR_NAME];
    int name_len;
    MPI_Get_processor_name(processor_name, &name_len);
-   if (process_id == 0) printf("MPI activated\n-------------\n");
-   printf("I am process %i of %i running on %s\n", process_id, num_processes, processor_name);
+   if (process_id == 0) {
+      printf("MPI activated\n-------------\n");
+      printf("I am process %i of %i running on %s (other process are silenced!)\n", process_id, num_processes, processor_name);
+   }
 #endif
 
 

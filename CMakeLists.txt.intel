@@ -28,11 +28,15 @@ get_filename_component (FFTW3_LIB_DIR "${FFTW3_LIBRARIES}" DIRECTORY)
 
 # nfft3
 include (ExternalProject)
+set (CCCC "icc -qmkl=sequential")
 ExternalProject_Add (nfft3
   PREFIX nfft3
-  URL https://www-user.tu-chemnitz.de/~potts/nfft/download/nfft-3.3.2.tar.gz
-  URL_HASH MD5=550737c06f4d6ea6c156800169d8f0d9
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-fftw3-libdir=${FFTW3_LIB_DIR} --enable-all --with-gcc-arch=haswell
+  URL https://www-user.tu-chemnitz.de/~potts/nfft/download/nfft-3.4.1.tar.gz
+  URL_HASH MD5=9c2ad6cf86fe4a7bc0de8d2d92b101f4
+  PATCH_COMMAND sed -i s/xHost/march=core-avx2/g <SOURCE_DIR>/m4/ax_cc_maxopt.m4 <SOURCE_DIR>/configure
+  CONFIGURE_COMMAND 
+  ${CMAKE_COMMAND} -E env CC=${CCCC}
+  <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-all
   BUILD_COMMAND make
   INSTALL_COMMAND make install
   )
@@ -99,7 +103,7 @@ target_link_libraries (SIMPSON m )
 target_link_libraries (SIMPSON ${TCL_LIBRARY})
 target_link_libraries (SIMPSON ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
 target_link_libraries (SIMPSON ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY})
-target_link_libraries (SIMPSON ${FFTW3_LIBRARIES})
+#target_link_libraries (SIMPSON ${FFTW3_LIBRARIES})
 target_link_libraries (SIMPSON ${NFFT3_LIBRARIES})
 target_link_libraries (SIMPSON ${MPI_LIBRARIES})
 add_dependencies (SIMPSON nfft3)
